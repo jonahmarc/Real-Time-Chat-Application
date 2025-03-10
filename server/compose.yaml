@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres
+    container_name: chat-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: chatdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - chat_data:/var/lib/postgresql/data
+
+  server:
+    build: .
+    container_name: chat-server
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://admin:admin@postgres:5432/chatdb
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    volumes:
+      - .:/src
+    working_dir: /src
+    command: npm run dev
+
+volumes:
+  chat_data:
