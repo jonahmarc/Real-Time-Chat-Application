@@ -2,13 +2,13 @@
 FROM node:18
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /src
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies including dev dependencies
+RUN npm install --include=dev
 
 # Copy the rest of the application files
 COPY . .
